@@ -1,19 +1,14 @@
 from word2number import w2n
 
-LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
-UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 def encryption(text, shift):
     cipher_text = ""
     for char in text:
-        if char in LOWERCASE:
-            index = LOWERCASE.index(char)
-            new_index = (index - shift) % 26
-            cipher_text += LOWERCASE[new_index]
-        elif char in UPPERCASE:
-            index = UPPERCASE.index(char)
-            new_index = (index - shift) % 26
-            cipher_text += UPPERCASE[new_index]
+        if char.islower():
+            new_index = (ord(char) - ord('a') + shift) % 26
+            cipher_text += chr(new_index + ord('a'))
+        elif char.isupper():
+            new_index = (ord(char) - ord('A') + shift) % 26
+            cipher_text += chr(new_index + ord('A'))
         else:
             cipher_text += char
     return cipher_text
@@ -21,20 +16,17 @@ def encryption(text, shift):
 def decryption(cipher_text, shift):
     plaintext = ""
     for char in cipher_text:
-        if char in LOWERCASE:
-            index = LOWERCASE.index(char)
-            new_index = (index + shift) % 26
-            plaintext += LOWERCASE[new_index]
-        elif char in UPPERCASE:
-            index = UPPERCASE.index(char)
-            new_index = (index + shift) % 26
-            plaintext += UPPERCASE[new_index]
+        if char.islower():
+            new_index = (ord(char) - ord('a') - shift) % 26
+            plaintext += chr(new_index + ord('a'))
+        elif char.isupper():
+            new_index = (ord(char) - ord('A') - shift) % 26
+            plaintext += chr(new_index + ord('A'))
         else:
             plaintext += char
     return plaintext
 
 def brute_force(cipher_text):
-    print("\n...... Brute force results ......")
     for key in range(26):
         print(f"Key {key}: {decryption(cipher_text, key)}")
 
